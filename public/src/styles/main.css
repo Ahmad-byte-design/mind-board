@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'DM Sans', system-ui, sans-serif;
+  --font-hand: 'Caveat', cursive;
+  --font-mono: 'DM Mono', ui-monospace, monospace;
+
+  --color-ink-deep: #171510;
+  --color-ink: #181713;
+  --color-workspace: #272119;
+  --color-surface-dark: #29231F;
+  --color-paper: #FFF8E7;
+  --color-paper-muted: #F5E8CF;
+  --color-notebook: #E8DAC0;
+
+  --color-cork: #94613A;
+  --color-cork-light: #B87C42;
+  --color-wood-dark: #422411;
+  --color-wood: #5B351C;
+  --color-wood-light: #A36C3C;
+  --color-ink-paper: #302923;
+  --color-ink-muted: #61574C;
+
+  --color-red: #D04535;
+  --color-red-deep: #B8312B;
+  --color-string: #AA2F2A;
+  --color-purple: #795BD1;
+  --color-purple-deep: #6E4ECA;
+  --color-gold: #E4AD64;
+  --color-green: #3B9A60;
+  --color-yellow: #E3B22F;
+  --color-pin-white: #E2DFD4;
+
+  --color-line-paper: #CFC1A9;
+  --color-border-paper: #C8B18E;
+  --color-border-dark: rgba(255, 248, 231, 0.18);
+  --color-text-dark-muted: #C4BBAE;
+}
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background: var(--color-ink-deep);
+    color: var(--color-paper);
+    min-height: 100dvh;
+  }
+
+  #root {
+    min-height: 100dvh;
+  }
+
+  input, button, textarea, select {
+    font: inherit;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}

@@ -1,0 +1,6 @@
+export { default as PrimaryBtn } from './PrimaryBtn'
+export { default as SecondaryBtn } from './SecondaryBtn'
+export { default as Image } from './Image'
+export { default as Input } from './Input'
+export { default as Form } from './Form'
+export { default as Avatar } from './Avatar'
