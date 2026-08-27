@@ -8,7 +8,7 @@ Route::prefix('auth')->group(function () {
 
     // Public routes
     Route::post('/register', [AuthController::class, 'register'])
-        ->middleware('throttle:10,1')
+        ->middleware(['throttle:10,1', \Illuminate\Session\Middleware\StartSession::class])
         ->name('auth.register');
 
     Route::post('/login', [AuthController::class, 'login'])

@@ -1,7 +1,7 @@
 import { motion } from 'motion/react'
 import { btnHover } from '@/lib/motion'
 
-interface SecondaryBtnProps extends React.ComponentProps<typeof motion.button> {}
+type SecondaryBtnProps = React.ComponentProps<typeof motion.button>
 
 export default function SecondaryBtn({ children, className = '', ...props }: SecondaryBtnProps) {
   return (

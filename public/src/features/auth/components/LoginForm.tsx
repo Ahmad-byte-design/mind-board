@@ -5,6 +5,7 @@ import { useLogin } from '../hooks'
 import { toast } from 'sonner'
 import { PrimaryBtn, Input, Form } from '@/components/ui'
 import { getApiError } from '@/lib/api-errors'
+import { ROUTES } from '@/constants/routes.constants'
 
 export default function LoginForm() {
   const navigate = useNavigate()
@@ -20,7 +21,7 @@ export default function LoginForm() {
       {
         onSuccess: () => {
           toast.success('Welcome back!')
-          navigate('/')
+          navigate(ROUTES.LEARNING)
         },
         onError: (error) => {
           toast.error(getApiError(error))

@@ -2,7 +2,9 @@ import { createBrowserRouter, Navigate } from 'react-router'
 import LoginPage from '@/pages/LoginPage'
 import RegisterPage from '@/pages/RegisterPage'
 import LandingPage from '@/pages/LandingPage'
+import LearningPage from '@/pages/LearningPage'
 import PublicRoute from './layouts/PublicRoute'
+import ProtectedRoute from './layouts/ProtectedRoute'
 
 const router = createBrowserRouter([
   {
@@ -23,6 +25,14 @@ const router = createBrowserRouter([
       <PublicRoute>
         <RegisterPage />
       </PublicRoute>
+    ),
+  },
+  {
+    path: '/learning',
+    element: (
+      <ProtectedRoute>
+        <LearningPage />
+      </ProtectedRoute>
     ),
   },
   {

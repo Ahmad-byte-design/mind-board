@@ -5,6 +5,7 @@ import { useRegister } from '../hooks'
 import { toast } from 'sonner'
 import { PrimaryBtn, Input, Form, Avatar } from '@/components/ui'
 import { getApiError, getApiFieldErrors } from '@/lib/api-errors'
+import { ROUTES } from '@/constants/routes.constants'
 
 export default function RegisterForm() {
   const navigate = useNavigate()
@@ -30,7 +31,7 @@ export default function RegisterForm() {
       {
         onSuccess: () => {
           toast.success('Welcome to MindBoard!')
-          navigate('/')
+          navigate(ROUTES.LEARNING)
         },
         onError: (error) => {
           const fields = getApiFieldErrors(error)
