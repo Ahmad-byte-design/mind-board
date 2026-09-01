@@ -689,3 +689,212 @@ I can visually see how far I've come
 The final emotional response should be:
 
 > **"This is my learning world."**
+
+---
+
+# API — Papers
+
+A paper is a single note/concept pinned to a Page's board. Ownership is derived through the parent page. All endpoints require Sanctum cookie/session auth (`/api/v1` prefix). List uses cursor pagination for infinite scroll.
+
+### POST /api/v1/pages/{page}/papers
+
+```json
+// Request
+{
+  "content": "useState is a React Hook used to manage changing state."
+}
+
+// 201 Response
+{
+  "message": "Paper created successfully.",
+  "paper": {
+    "id": 45,
+    "page_id": 12,
+    "content": "useState is a React Hook used to manage changing state.",
+    "created_at": "2026-08-29T09:00:00.000000Z",
+    "updated_at": "2026-08-29T09:00:00.000000Z"
+  }
+}
+```
+
+### GET /api/v1/pages/{page}/papers
+
+```json
+// ?cursor={next_cursor} to load the next chunk (omit on first request)
+{
+  "data": [
+    {
+      "id": 45,
+      "page_id": 12,
+      "content": "useState is a React Hook used to manage changing state.",
+      "created_at": "2026-08-29T09:00:00.000000Z",
+      "updated_at": "2026-08-29T09:00:00.000000Z"
+    }
+  ],
+  "meta": {
+    "per_page": 15,
+    "next_cursor": "eyJpZCI6NDUsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0",
+    "prev_cursor": null
+  }
+}
+```
+
+### GET /api/v1/papers/{paper}
+
+```json
+{
+  "paper": {
+    "id": 45,
+    "page_id": 12,
+    "content": "useState is a React Hook used to manage changing state.",
+    "created_at": "2026-08-29T09:00:00.000000Z",
+    "updated_at": "2026-08-29T09:00:00.000000Z"
+  }
+}
+```
+
+### PUT/PATCH /api/v1/papers/{paper}
+
+```json
+// Request
+{ "content": "useState is a React Hook for managing local component state." }
+
+// 200 Response
+{
+  "message": "Paper updated successfully.",
+  "paper": {
+    "id": 45,
+    "page_id": 12,
+    "content": "useState is a React Hook for managing local component state.",
+    "created_at": "2026-08-29T09:00:00.000000Z",
+    "updated_at": "2026-08-29T09:00:00.000000Z"
+  }
+}
+```
+
+### DELETE /api/v1/papers/{paper}
+
+```json
+{ "message": "Paper deleted successfully." }
+```
+
+Errors: 404 via route-model binding when the page/paper doesn't exist; 403 when it exists but isn't owned by the authenticated user; 422 for validation failures.
+
+---
+
+# API — Board & Strings
+
+A **string** is a relationship between two papers on the same page (`paper1_id`, `paper2_id`). The board endpoint returns everything a page needs to render its canvas in one request.
+
+### GET /api/v1/pages/{page}/board
+
+```json
+{
+  "papers": [
+    {
+      "id": 45,
+      "page_id": 12,
+      "content": "useState is a React Hook used to manage changing state.",
+      "x": 480,
+      "y": 240,
+      "created_at": "2026-08-29T09:00:00.000000Z",
+      "updated_at": "2026-08-29T09:00:00.000000Z"
+    }
+  ],
+  "strings": [
+    { "id": 11, "paper1_id": 45, "paper2_id": 46 }
+  ]
+}
+```
+
+### PATCH /api/v1/pages/{page}/board
+
+Batched save for the board. Updates the position of the listed papers and creates any listed string connections that don't already exist. Papers/strings not listed are left untouched.
+
+```json
+// Request
+{
+  "papers": [
+    { "id": 45, "x": 520, "y": 300 },
+    { "id": 46, "x": 780, "y": 260 }
+  ],
+  "strings": [
+    { "paper1_id": 45, "paper2_id": 55 }
+  ]
+}
+
+// 200 Response
+{
+  "message": "Board updated successfully.",
+  "created_strings": [
+    { "id": 17, "paper1_id": 45, "paper2_id": 55 }
+  ]
+}
+```
+
+`created_strings` only lists strings the server actually created — a connection that already exists is skipped idempotently, so the frontend can safely remap temporary edge ids to real string ids after every save. Rejected with 422 when any paper id doesn't belong to the page or when x/y are missing.
+
+### POST /api/v1/pages/{page}/strings
+
+```json
+// Request
+{ "paper1_id": 45, "paper2_id": 46 }
+
+// 201 Response
+{
+  "message": "String created successfully.",
+  "string": { "id": 11, "paper1_id": 45, "paper2_id": 46 }
+}
+```
+
+Rejected with 422 when either paper doesn't belong to the page, when both ids are equal, or when a string already connects the two papers (in either direction).
+
+### DELETE /api/v1/strings/{string}
+
+```json
+{ "message": "String deleted successfully." }
+```
+
+Deleting a paper cascades to its strings automatically. Errors: 404 when the page/string doesn't exist; 403 when it isn't owned by the authenticated user.
+
+# API — AI Board Generation
+
+`POST /api/v1/pages/{page}/generate` asks the AI to break the page's **title** into a focused concept graph (about 12–20 concepts), persists everything as papers + strings, computes tree-shaped positions, and returns the full board — the same response shape as `GET /api/v1/pages/{page}/board`.
+
+## POST /api/v1/pages/{page}/generate
+
+**Body:** none
+
+**201 Response**
+
+```json
+{
+  "message": "Board generated successfully.",
+  "papers": [
+    { "id": 45, "page_id": 12, "content": "JavaScript Fundamentals", "x": 0, "y": 0 },
+    { "id": 46, "page_id": 12, "content": "JSX", "x": 240, "y": 180 }
+  ],
+  "strings": [
+    { "id": 17, "paper1_id": 45, "paper2_id": 46 }
+  ]
+}
+```
+
+**Errors**
+
+- `409` — `{ "message": "This page already has a board." }` (generation only works on an empty page)
+- `422` — AI returned malformed/empty output after a retry
+- `502` — the AI provider returned an error
+- `401` / `403` — standard auth/ownership errors, same as the rest of the Board API
+
+All writes (papers, strings, positions) run in a single DB transaction — a failed AI call or a failed write leaves the page untouched.
+
+## Configuration and layout constants
+
+- The provider is **Google Gemini** (Flash-Lite by default). Set `GEMINI_API_KEY` in your `.env`; override `GEMINI_MODEL` (default `gemini-flash-lite-latest` — an alias that always points at the current Flash-Lite release, so it won't break when older model names are retired) and `GEMINI_MAX_OUTPUT_TOKENS` (leave empty to use the model's default, effectively unlimited output).
+- The AI request/parse lives only in `App\Services\Ai\KnowledgeGraphGenerator`.
+- Layout constants used for the tree shape (`App\Services\Board\TreeLayoutCalculator`):
+  - `LEVEL_HEIGHT = 180` — vertical gap between concept levels
+  - `NODE_SPACING = 240` — horizontal gap between concepts on the same level
+
+  Keep the frontend node height/width in sync with these values. Edge `from` is a prerequisite of `to`; each node's depth is the length of its longest prerequisite chain and each level is horizontally centered.

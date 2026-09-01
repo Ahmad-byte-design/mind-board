@@ -30,7 +30,7 @@ export default function RegisterForm() {
       { name, email, password, password_confirmation: passwordConfirmation, avatar: avatar ?? undefined },
       {
         onSuccess: () => {
-          toast.success('Welcome to MindBoard!')
+          toast.success('Welcome to Loom!')
           navigate(ROUTES.LEARNING)
         },
         onError: (error) => {
@@ -120,7 +120,7 @@ export default function RegisterForm() {
       </Form>
 
       <p className="mt-6 text-center text-xs text-text-dark-muted/60">
-        By continuing, you agree to MindBoard's{' '}
+        By continuing, you agree to Loom's{' '}
         <span className="underline">Terms</span> and{' '}
         <span className="underline">Privacy Policy</span>.
       </p>

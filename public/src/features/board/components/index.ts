@@ -1,1 +1,7 @@
 export { default as BoardPlaceholder } from './BoardPlaceholder'
+export { default as LearningBoard } from './LearningBoard'
+export { default as BoardToolbar } from './BoardToolbar'
+export { default as BoardStatus } from './BoardStatus'
+export { default as PaperContextMenu } from './PaperContextMenu'
+export { default as PaperDetailsPanel } from './PaperDetailsPanel'
+export { default as StringDeleteButton } from './StringDeleteButton'

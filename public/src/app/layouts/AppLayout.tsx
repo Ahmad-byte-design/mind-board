@@ -4,7 +4,7 @@ import { useLocalStorage } from '@/hooks/useLocalStorage'
 import { useActivePage } from '@/features/pages/hooks'
 import { usePagesStore } from '@/features/pages/store/pages.store'
 import { NotebookSidebar, MobileNotebookDrawer } from '@/features/pages/components'
-import { BoardPlaceholder } from '@/features/board/components'
+import { LearningBoard } from '@/features/board/components'
 import {
   MOBILE_BREAKPOINT,
   SIDEBAR_COLLAPSED_KEY,
@@ -32,7 +32,7 @@ export default function AppLayout() {
     <div className="flex h-dvh overflow-hidden">
       {isMobile ? (
         <>
-          <BoardPlaceholder page={activePage} isMobile onOpenNotebook={openNotebook} />
+          <LearningBoard page={activePage} isMobile onOpenNotebook={openNotebook} />
           <MobileNotebookDrawer open={isMobileSidebarOpen} isOnline={isOnline} onClose={closeNotebook} />
         </>
       ) : (
@@ -44,7 +44,7 @@ export default function AppLayout() {
             onToggleCollapse={() => setCollapsed(!collapsed)}
             onWidthChange={setWidth}
           />
-          <BoardPlaceholder page={activePage} isMobile={false} onOpenNotebook={noop} />
+          <LearningBoard page={activePage} isMobile={false} onOpenNotebook={noop} />
         </>
       )}
     </div>

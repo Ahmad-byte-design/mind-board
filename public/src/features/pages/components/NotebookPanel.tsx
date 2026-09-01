@@ -4,6 +4,7 @@ import SidebarHeader from './SidebarHeader'
 import NewPageButton from './NewPageButton'
 import PageList from './PageList'
 import OfflineNotice from './OfflineNotice'
+import UserMenu from './UserMenu'
 import type { Page } from '../types/page.types'
 
 interface NotebookPanelProps {
@@ -51,6 +52,9 @@ export default function NotebookPanel({
         onCreate={onOpenCreate}
       />
       <OfflineNotice isOnline={isOnline} />
+      <div className="flex items-center justify-end border-t border-border-paper/50 px-4 py-3">
+        <UserMenu />
+      </div>
     </div>
   )
 }

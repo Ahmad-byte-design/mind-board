@@ -1,4 +1,6 @@
 import { Plus, PanelLeftOpen } from 'lucide-react'
+import { Image } from '@/components/ui'
+import logo from '@/assets/images/logo.png'
 import { cn } from '@/lib/utils'
 import type { Page } from '../types/page.types'
 
@@ -27,9 +29,9 @@ export default function CollapsedRail({
         type="button"
         onClick={onExpand}
         aria-label="Expand notebook"
-        className="mb-1 flex h-10 w-10 items-center justify-center rounded-lg border border-border-paper/60 bg-paper text-ink-paper shadow-sm transition-colors hover:bg-paper-muted"
+        className="mb-1 flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg border border-border-paper/60 bg-paper shadow-sm transition-colors hover:bg-paper-muted"
       >
-        <span className="font-hand text-lg font-bold">m</span>
+        <Image src={logo} alt="Loom" className="h-full w-full object-cover" />
       </button>
 
       <button

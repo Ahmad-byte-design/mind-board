@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router'
 import { Image } from '@/components/ui'
 import landingImg from '@/assets/images/landing.jpg'
+import logo from '@/assets/images/logo.png'
 
 interface AuthLayoutProps {
   children: React.ReactNode
@@ -23,10 +24,12 @@ export default function AuthLayout({ children, mode }: AuthLayoutProps) {
           </button>
 
           <div className="brand-mark mb-4 flex items-center gap-2">
-            <span className="flex h-8 w-8 items-center justify-center rounded-md bg-red font-hand text-lg font-bold text-paper">
-              m
-            </span>
-            <b className="font-sans text-lg font-semibold text-paper">MindBoard</b>
+            <Image
+              src={logo}
+              alt="Loom"
+              className="h-8 w-8 rounded-md object-cover shadow-[0_4px_12px_rgba(0,0,0,0.4)]"
+            />
+            <b className="font-sans text-lg font-semibold text-paper">Loom</b>
           </div>
 
           <p className="text-sm text-text-dark-muted">
@@ -54,7 +57,7 @@ export default function AuthLayout({ children, mode }: AuthLayoutProps) {
         </button>
         <Image
           src={landingImg}
-          alt="MindBoard"
+          alt="Loom"
           className="h-full w-full object-cover opacity-75"
         />
       </section>

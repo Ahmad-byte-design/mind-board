@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'gemini' => [
+        'api_key' => env('GEMINI_API_KEY'),
+        'model' => env('GEMINI_MODEL', 'gemini-flash-lite-latest'),
+        'max_output_tokens' => env('GEMINI_MAX_OUTPUT_TOKENS') ? (int) env('GEMINI_MAX_OUTPUT_TOKENS') : null,
+    ],
+
 ];

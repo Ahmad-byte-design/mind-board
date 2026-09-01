@@ -1,10 +1,13 @@
 import { Toaster } from 'sonner'
 import QueryProvider from './QueryProvider'
+import AuthBootstrap from './AuthBootstrap'
 
 export default function AppProviders({ children }: { children: React.ReactNode }) {
   return (
     <QueryProvider>
-      {children}
+      <AuthBootstrap>
+        {children}
+      </AuthBootstrap>
       <Toaster
         position="top-right"
         toastOptions={{

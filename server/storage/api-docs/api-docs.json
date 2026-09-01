@@ -467,6 +467,373 @@
                 ]
             }
         },
+        "/api/v1/pages/{page}/board": {
+            "get": {
+                "tags": [
+                    "Board"
+                ],
+                "summary": "Get the full board for a page (papers and strings)",
+                "operationId": "b2bd1e0afe173df9d2343227afa5a298",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Board data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "papers": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Paper"
+                                            }
+                                        },
+                                        "strings": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/String"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "cookie_auth": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Board"
+                ],
+                "summary": "Save the board (paper positions and new string connections)",
+                "description": "Batched save for the board: updates the position of the listed papers and creates any listed string connections that do not already exist. Papers/strings not listed in the payload are left untouched.",
+                "operationId": "b43e4d76f8392449ce0b98da384b5c1e",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "papers": {
+                                        "type": "array",
+                                        "items": {
+                                            "required": [
+                                                "id",
+                                                "x",
+                                                "y"
+                                            ],
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 12
+                                                },
+                                                "x": {
+                                                    "type": "integer",
+                                                    "example": 480
+                                                },
+                                                "y": {
+                                                    "type": "integer",
+                                                    "example": 240
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "strings": {
+                                        "type": "array",
+                                        "items": {
+                                            "required": [
+                                                "paper1_id",
+                                                "paper2_id"
+                                            ],
+                                            "properties": {
+                                                "paper1_id": {
+                                                    "type": "integer",
+                                                    "example": 12
+                                                },
+                                                "paper2_id": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Board updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Board updated successfully."
+                                        },
+                                        "created_strings": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/String"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "cookie_auth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/pages/{page}/generate": {
+            "post": {
+                "tags": [
+                    "AI"
+                ],
+                "summary": "Generate a board from the page title",
+                "description": "Asks the AI to break the page title into a focused concept graph, persists papers, strings and tree-shaped positions, then returns the full board. Only works on an empty page.",
+                "operationId": "99e4b75c712f3a502820a6a377178d01",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Board generated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Board generated successfully."
+                                        },
+                                        "papers": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 45
+                                                    },
+                                                    "page_id": {
+                                                        "type": "integer",
+                                                        "example": 12
+                                                    },
+                                                    "content": {
+                                                        "type": "string",
+                                                        "example": "JavaScript Fundamentals"
+                                                    },
+                                                    "x": {
+                                                        "type": "integer",
+                                                        "example": 0
+                                                    },
+                                                    "y": {
+                                                        "type": "integer",
+                                                        "example": 0
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "strings": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 17
+                                                    },
+                                                    "paper1_id": {
+                                                        "type": "integer",
+                                                        "example": 45
+                                                    },
+                                                    "paper2_id": {
+                                                        "type": "integer",
+                                                        "example": 46
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "This action is unauthorized."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No query results for model [App\\Models\\Page]."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "The page already has a board",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "This page already has a board."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "The AI returned malformed output",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The AI returned malformed output. Please try again."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "502": {
+                        "description": "The AI provider failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The AI provider returned an error. Please try again."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "cookie_auth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/pages": {
             "get": {
                 "tags": [
@@ -739,6 +1106,434 @@
                     }
                 ]
             }
+        },
+        "/api/v1/pages/{page}/papers": {
+            "get": {
+                "tags": [
+                    "Papers"
+                ],
+                "summary": "List papers on a page (cursor paginated)",
+                "operationId": "9141d6d0645a66ccba321a3a0813e2c3",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of papers",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Paper"
+                                            }
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                },
+                                                "next_cursor": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "prev_cursor": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "cookie_auth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Papers"
+                ],
+                "summary": "Create a new paper on a page",
+                "operationId": "9e3fcd7f3b86ee688e7da6b6763d25bc",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "content"
+                                ],
+                                "properties": {
+                                    "content": {
+                                        "type": "string",
+                                        "example": "useState is a React Hook used to manage changing state."
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Paper created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Paper created successfully."
+                                        },
+                                        "paper": {
+                                            "$ref": "#/components/schemas/Paper"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "cookie_auth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/papers/{paper}": {
+            "get": {
+                "tags": [
+                    "Papers"
+                ],
+                "summary": "Show one paper",
+                "operationId": "acf7bce7112da4a4543c4eb83474abf8",
+                "parameters": [
+                    {
+                        "name": "paper",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Paper details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "paper": {
+                                            "$ref": "#/components/schemas/Paper"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "cookie_auth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Papers"
+                ],
+                "summary": "Update a paper",
+                "operationId": "bab7b7d5be48188a88b54ca99060fbf2",
+                "parameters": [
+                    {
+                        "name": "paper",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "content"
+                                ],
+                                "properties": {
+                                    "content": {
+                                        "type": "string",
+                                        "example": "useState is a React Hook for managing local component state."
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Paper updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Paper updated successfully."
+                                        },
+                                        "paper": {
+                                            "$ref": "#/components/schemas/Paper"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "cookie_auth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Papers"
+                ],
+                "summary": "Delete a paper",
+                "operationId": "6b24b0dd4f21487bb7ba0b2d6fd4b099",
+                "parameters": [
+                    {
+                        "name": "paper",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Paper deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Paper deleted successfully."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "cookie_auth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/pages/{page}/strings": {
+            "post": {
+                "tags": [
+                    "Strings"
+                ],
+                "summary": "Create a string between two papers on a page",
+                "operationId": "84374754accc4c5643a80ce85a32d2a0",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "paper1_id",
+                                    "paper2_id"
+                                ],
+                                "properties": {
+                                    "paper1_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "paper2_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "String created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "String created successfully."
+                                        },
+                                        "string": {
+                                            "$ref": "#/components/schemas/String"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "cookie_auth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/strings/{string}": {
+            "delete": {
+                "tags": [
+                    "Strings"
+                ],
+                "summary": "Delete a string",
+                "operationId": "7dd5109c7a219edd77f7545bed719609",
+                "parameters": [
+                    {
+                        "name": "string",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "String deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "String deleted successfully."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "cookie_auth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -760,6 +1555,56 @@
                     "updated_at": {
                         "type": "string",
                         "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Paper": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 45
+                    },
+                    "page_id": {
+                        "type": "integer",
+                        "example": 12
+                    },
+                    "content": {
+                        "type": "string",
+                        "example": "useState is a React Hook used to manage changing state."
+                    },
+                    "x": {
+                        "type": "integer",
+                        "example": 480
+                    },
+                    "y": {
+                        "type": "integer",
+                        "example": 240
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "String": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 11
+                    },
+                    "paper1_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "paper2_id": {
+                        "type": "integer",
+                        "example": 2
                     }
                 },
                 "type": "object"
@@ -820,8 +1665,24 @@
             "description": "Password management endpoints"
         },
         {
+            "name": "Board",
+            "description": "Board endpoints"
+        },
+        {
             "name": "Pages",
             "description": "Learning page endpoints"
+        },
+        {
+            "name": "Papers",
+            "description": "Paper note endpoints"
+        },
+        {
+            "name": "Strings",
+            "description": "Paper relationship endpoints"
+        },
+        {
+            "name": "AI",
+            "description": "AI"
         }
     ],
     "security": [

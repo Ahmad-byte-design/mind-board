@@ -13,6 +13,9 @@ export const QUERY_KEYS = {
   STRINGS: {
     LIST: ['strings'] as const,
   },
+  BOARD: {
+    DATA: (pageId: number) => ['board', pageId] as const,
+  },
   AI: {
     GENERATE: ['ai', 'generate'] as const,
   },

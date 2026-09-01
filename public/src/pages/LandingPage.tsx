@@ -3,6 +3,7 @@ import { motion } from 'motion/react'
 import { fadeUp } from '@/lib/motion'
 import { Image, PrimaryBtn, SecondaryBtn } from '@/components/ui'
 import landingImg from '@/assets/images/bg-landing.jpg'
+import logo from '@/assets/images/logo.png'
 
 export default function LandingPage() {
   const navigate = useNavigate()
@@ -17,10 +18,12 @@ export default function LandingPage() {
       <div className="absolute inset-0 bg-ink-deep/70" />
       <motion.div {...fadeUp} className="relative z-10">
         <div className="brand-mark mb-8 flex items-center justify-center gap-3">
-          <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-red font-hand text-2xl font-bold text-paper">
-            m
-          </span>
-          <b className="font-sans text-3xl font-semibold text-paper">MindBoard</b>
+          <Image
+            src={logo}
+            alt="Loom"
+            className="h-12 w-12 rounded-xl object-cover shadow-[0_8px_24px_rgba(0,0,0,0.4)]"
+          />
+          <b className="font-sans text-3xl font-semibold text-paper">Loom</b>
         </div>
 
         <h1 className="mb-4 font-hand text-5xl text-paper lg:text-6xl">

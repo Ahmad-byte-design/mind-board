@@ -48,13 +48,10 @@ export function useLogout() {
 }
 
 export function useCurrentUser() {
-  const { setUser } = useAuthStore()
-
   return useQuery({
     queryKey: QUERY_KEYS.AUTH.ME,
     queryFn: async () => {
       const response = await authApi.getCurrentUser()
-      setUser(response.user)
       return response.user
     },
     retry: false,

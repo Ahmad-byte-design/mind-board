@@ -93,7 +93,7 @@ export default function LoginForm() {
       </Form>
 
       <p className="mt-6 text-center text-xs text-text-dark-muted/60">
-        By continuing, you agree to MindBoard's{' '}
+        By continuing, you agree to Loom's{' '}
         <span className="underline">Terms</span> and{' '}
         <span className="underline">Privacy Policy</span>.
       </p>

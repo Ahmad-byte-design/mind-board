@@ -1,4 +1,6 @@
 import { PanelLeftClose, X } from 'lucide-react'
+import { Image } from '@/components/ui'
+import logo from '@/assets/images/logo.png'
 
 interface SidebarHeaderProps {
   onCollapse: () => void
@@ -9,9 +11,11 @@ export default function SidebarHeader({ onCollapse, onCloseMobile }: SidebarHead
   return (
     <div className="flex items-center justify-between gap-2 px-4 pb-4 pt-5">
       <div className="flex min-w-0 items-center gap-2.5">
-        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border-paper/60 bg-paper text-ink-paper shadow-sm">
-          <span className="font-hand text-lg font-bold">m</span>
-        </span>
+        <Image
+          src={logo}
+          alt="Loom"
+          className="h-9 w-9 shrink-0 rounded-lg object-cover shadow-sm"
+        />
         <div className="min-w-0">
           <h1 className="truncate text-[15px] font-semibold leading-tight text-ink-paper">
             Learning Notebook
