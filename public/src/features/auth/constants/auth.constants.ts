@@ -4,4 +4,5 @@ export const AUTH_ENDPOINTS = {
   REGISTER: '/api/v1/auth/register',
   LOGOUT: '/api/v1/auth/logout',
   ME: '/api/v1/auth/me',
+  PROFILE: '/api/v1/auth/profile',
 } as const

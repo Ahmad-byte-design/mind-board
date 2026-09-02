@@ -1,0 +1,45 @@
+{
+  "profile": {
+    "title": "Profili Düzenle",
+    "name": "İsim",
+    "email": "E-posta",
+    "avatar": "Avatar",
+    "save": "Değişiklikleri kaydet",
+    "success": "Profil başarıyla güncellendi",
+    "error": "Profil güncellenemedi"
+  },
+  "settings": {
+    "title": "Ayarlar",
+    "language": "Dil"
+  },
+  "userMenu": {
+    "profile": "Profil",
+    "settings": "Ayarlar",
+    "logout": "Çıkış yap"
+  },
+  "dialogs": {
+    "createPage": {
+      "title": "Yeni öğrenme sayfası",
+      "placeholder": "örn. React Ustalığı",
+      "cancel": "İptal",
+      "create": "Sayfa oluştur",
+      "creating": "Oluşturuluyor...",
+      "success": "Sayfa oluşturuldu."
+    },
+    "newPaper": {
+      "title": "Yeni kağıt",
+      "placeholder": "Kavram notları...",
+      "create": "Kağıt oluştur",
+      "creating": "Oluşturuluyor…"
+    },
+    "generateBoard": {
+      "title": "Yapay zekayla panolar mı oluşturulsun?",
+      "description": "Yapay zeka sayfa konunu görsel bir bilgi haritasına dönüştürür — kırmızı iplerle bağlı kağıtlar, keşfe hazır.",
+      "warning": "Yalnızca boş panoda çalışır. Mevcut kağıtlar sunucu tarafından reddedilir.",
+      "cancel": "İptal",
+      "generate": "Yapay zekayla oluştur",
+      "generating": "Oluşturuluyor...",
+      "success": "Pano başarıyla oluşturuldu."
+    }
+  }
+}

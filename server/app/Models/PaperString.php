@@ -2,13 +2,18 @@
 
 namespace App\Models;
 
+use Database\Factories\PaperStringFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 #[Fillable(['paper1_id', 'paper2_id'])]
 class PaperString extends Model
 {
+    /** @use HasFactory<PaperStringFactory> */
+    use HasFactory;
+
     protected $table = 'strings';
 
     public function paper1(): BelongsTo

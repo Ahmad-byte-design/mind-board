@@ -1,6 +1,6 @@
 import api from '@/lib/axios'
 import { AUTH_ENDPOINTS } from '../constants/auth.constants'
-import type { LoginFormData, RegisterFormData } from '../schemas/auth.schema'
+import type { LoginFormData, RegisterFormData, UpdateProfilePayload } from '../schemas/auth.schema'
 import type { AuthResponse, MeResponse } from '../types/auth.types'
 
 export const authApi = {
@@ -30,6 +30,20 @@ export const authApi = {
 
   getCurrentUser: async (): Promise<MeResponse> => {
     const response = await api.get<MeResponse>(AUTH_ENDPOINTS.ME)
+    return response.data
+  },
+
+  updateProfile: async (data: UpdateProfilePayload): Promise<AuthResponse> => {
+    const formData = new FormData()
+    formData.append('name', data.name)
+    formData.append('email', data.email)
+    if (data.avatar) {
+      formData.append('avatar', data.avatar)
+    }
+    formData.append('_method', 'PUT')
+    const response = await api.post<AuthResponse>(AUTH_ENDPOINTS.PROFILE, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
     return response.data
   },
 }

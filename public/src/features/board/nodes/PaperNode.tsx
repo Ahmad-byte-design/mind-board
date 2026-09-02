@@ -39,12 +39,6 @@ function PaperNodeInner({ data, selected, dragging }: NodeProps<PaperFlowNode>) 
 
         <PaperNodeHandles data={data} />
 
-        <span
-          aria-hidden="true"
-          className="absolute left-1/2 h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-red shadow-[inset_0_1px_1px_rgba(255,255,255,0.55),0_2px_4px_rgba(23,21,16,0.5)]"
-          style={{ top: '18%' }}
-        />
-
         <div className="absolute inset-x-0 top-[34%] px-[16%] text-center">
           <p className="font-hand line-clamp-5 wrap-break-word text-2xl leading-[1.6] text-ink-paper">
             {data.content}

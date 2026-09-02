@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { motion } from 'motion/react'
 import { toast } from 'sonner'
 import { BookOpen, X } from 'lucide-react'
@@ -36,6 +37,7 @@ interface NewPaperState {
 }
 
 export default function LearningBoard({ page, isMobile, onOpenNotebook }: LearningBoardProps) {
+  const { t } = useTranslation()
   const board = useBoard(page?.id ?? null)
   const [rfInstance, setRfInstance] = useState<ReactFlowInstance | null>(null)
 
@@ -123,7 +125,7 @@ export default function LearningBoard({ page, isMobile, onOpenNotebook }: Learni
     try {
       await board.generateBoard()
       setIsGenerateOpen(false)
-      toast.success('Board generated successfully.')
+      toast.success(t('dialogs.generateBoard.success'))
       rfInstance?.fitView({ padding: 0.2, duration: 400 })
     } catch (error) {
       toast.error(getApiError(error))
@@ -170,7 +172,7 @@ export default function LearningBoard({ page, isMobile, onOpenNotebook }: Learni
           edgeTypes={board.edgeTypes}
           onNodeClick={handleNodeClick}
           onNodeDoubleClick={board.interactions.handleNodeDoubleClick}
-          onNodeContextMenu={board.interactions.handleNodeContextMenu}
+          // onNodeContextMenu={board.interactions.handleNodeContextMenu}
           onPaneClick={handlePaneClick}
           onPaneContextMenu={(event) => event.preventDefault()}
           onNodeDragStart={board.persistence.onNodeDragStart}
@@ -198,7 +200,7 @@ export default function LearningBoard({ page, isMobile, onOpenNotebook }: Learni
           />
           <Controls
             position="bottom-left"
-            className="!border-border-paper/50 !bg-paper/90 ![--xy-controls-button-color:var(--color-red)]"
+            className="!border-border-paper/50 !bg-paper/90 ![--xy-controls-button-color:var(--color-red)] hover:text-gray-700"
           />
         </ReactFlow>
 
@@ -235,7 +237,7 @@ export default function LearningBoard({ page, isMobile, onOpenNotebook }: Learni
             className="pointer-events-auto absolute left-1/2 top-16 z-[6] w-72 -translate-x-1/2 rounded-2xl border border-border-paper bg-paper p-3 shadow-[0_18px_50px_rgba(23,21,16,0.55)]"
           >
             <div className="mb-2 flex items-center justify-between">
-              <span className="font-hand text-lg font-semibold text-ink-paper">New paper</span>
+              <span className="font-hand text-lg font-semibold text-ink-paper">{t('dialogs.newPaper.title')}</span>
               <button
                 type="button"
                 onClick={() => setNewPaper((state) => ({ ...state, open: false }))}
@@ -250,7 +252,7 @@ export default function LearningBoard({ page, isMobile, onOpenNotebook }: Learni
                 value={newPaper.content}
                 onChange={(event) => setNewPaper((state) => ({ ...state, content: event.target.value }))}
                 rows={5}
-                placeholder="Concept notes..."
+                placeholder={t('dialogs.newPaper.placeholder')}
                 className="w-full resize-none rounded-lg border border-border-paper bg-paper-muted/60 px-2.5 py-2 text-sm text-ink-muted outline-none focus:border-red/50"
               />
               <button
@@ -259,7 +261,7 @@ export default function LearningBoard({ page, isMobile, onOpenNotebook }: Learni
                 onClick={handleCreatePaper}
                 className="w-full rounded-lg bg-red py-2 text-sm font-semibold text-paper transition-colors hover:bg-red-deep disabled:opacity-50"
               >
-                {newPaper.submitting ? 'Creating…' : 'Create paper'}
+                {newPaper.submitting ? t('dialogs.newPaper.creating') : t('dialogs.newPaper.create')}
               </button>
             </div>
           </motion.div>

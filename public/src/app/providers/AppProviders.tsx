@@ -1,6 +1,7 @@
 import { Toaster } from 'sonner'
 import QueryProvider from './QueryProvider'
 import AuthBootstrap from './AuthBootstrap'
+import '@/i18n'
 
 export default function AppProviders({ children }: { children: React.ReactNode }) {
   return (

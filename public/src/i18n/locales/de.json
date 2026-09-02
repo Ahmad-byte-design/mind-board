@@ -1,0 +1,45 @@
+{
+  "profile": {
+    "title": "Profil bearbeiten",
+    "name": "Name",
+    "email": "E-Mail",
+    "avatar": "Avatar",
+    "save": "Änderungen speichern",
+    "success": "Profil erfolgreich aktualisiert",
+    "error": "Profil konnte nicht aktualisiert werden"
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "language": "Sprache"
+  },
+  "userMenu": {
+    "profile": "Profil",
+    "settings": "Einstellungen",
+    "logout": "Abmelden"
+  },
+  "dialogs": {
+    "createPage": {
+      "title": "Neue Lernseite",
+      "placeholder": "z. B. React Meisterschaft",
+      "cancel": "Abbrechen",
+      "create": "Seite erstellen",
+      "creating": "Wird erstellt...",
+      "success": "Seite erstellt."
+    },
+    "newPaper": {
+      "title": "Neues Papier",
+      "placeholder": "Konzeptnotizen...",
+      "create": "Papier erstellen",
+      "creating": "Wird erstellt…"
+    },
+    "generateBoard": {
+      "title": "Board mit KI generieren?",
+      "description": "KI verwandelt das Thema deiner Seite in eine visuelle Wissenskarte — Papiere, die mit roten Fäden verbunden sind, bereit zum Erkunden.",
+      "warning": "Funktioniert nur auf einem leeren Board. Vorhandene Papiere werden vom Server abgelehnt.",
+      "cancel": "Abbrechen",
+      "generate": "Mit KI generieren",
+      "generating": "Wird generiert...",
+      "success": "Board erfolgreich generiert."
+    }
+  }
+}

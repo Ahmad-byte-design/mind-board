@@ -2,17 +2,19 @@
 
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Auth\PasswordController;
+use App\Http\Controllers\Api\Auth\ProfileController;
+use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
 
     // Public routes
     Route::post('/register', [AuthController::class, 'register'])
-        ->middleware(['throttle:10,1', \Illuminate\Session\Middleware\StartSession::class])
+        ->middleware(['throttle:10,1', StartSession::class])
         ->name('auth.register');
 
     Route::post('/login', [AuthController::class, 'login'])
-        ->middleware(['throttle:10,1', \Illuminate\Session\Middleware\StartSession::class])
+        ->middleware(['throttle:10,1', StartSession::class])
         ->name('auth.login');
 
     Route::post('/forgot-password', [PasswordController::class, 'forgotPassword'])
@@ -24,7 +26,7 @@ Route::prefix('auth')->group(function () {
         ->name('auth.reset-password');
 
     // Authenticated routes
-    Route::middleware(['auth:sanctum', \Illuminate\Session\Middleware\StartSession::class])->group(function () {
+    Route::middleware(['auth:sanctum', StartSession::class])->group(function () {
 
         Route::get('/me', [AuthController::class, 'me'])
             ->name('auth.me');
@@ -37,5 +39,8 @@ Route::prefix('auth')->group(function () {
 
         Route::put('/change-password', [PasswordController::class, 'changePassword'])
             ->name('auth.change-password');
+
+        Route::put('/profile', [ProfileController::class, 'update'])
+            ->name('auth.profile');
     });
 });

@@ -1,34 +1,42 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { ArrowRight } from 'lucide-react'
 import { useLogin } from '../hooks'
 import { toast } from 'sonner'
 import { PrimaryBtn, Input, Form } from '@/components/ui'
 import { getApiError } from '@/lib/api-errors'
 import { ROUTES } from '@/constants/routes.constants'
+import { loginSchema, type LoginFormData } from '../schemas/auth.schema'
 
 export default function LoginForm() {
   const navigate = useNavigate()
   const loginMutation = useLogin()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [remember, setRemember] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    loginMutation.mutate(
-      { email, password, remember },
-      {
-        onSuccess: () => {
-          toast.success('Welcome back!')
-          navigate(ROUTES.LEARNING)
-        },
-        onError: (error) => {
-          toast.error(getApiError(error))
-        },
-      }
-    )
-  }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+      remember: false,
+    },
+  })
+
+  const onSubmit = handleSubmit((values) => {
+    loginMutation.mutate(values, {
+      onSuccess: () => {
+        toast.success('Welcome back!')
+        navigate(ROUTES.LEARNING)
+      },
+      onError: (error) => {
+        toast.error(getApiError(error))
+      },
+    })
+  })
 
   return (
     <div>
@@ -55,30 +63,29 @@ export default function LoginForm() {
         </button>
       </div>
 
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={onSubmit}>
         <Input
           label="Email"
           type="email"
           required
           placeholder="you@example.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          error={errors.email?.message}
+          {...register('email')}
         />
         <Input
           label="Password"
           type="password"
           required
           placeholder="••••••••"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          error={errors.password?.message}
+          {...register('password')}
         />
 
         <div className="flex items-center gap-2">
           <input
             type="checkbox"
-            checked={remember}
-            onChange={(e) => setRemember(e.target.checked)}
             className="h-4 w-4 rounded border-border-dark bg-surface-dark accent-gold"
+            {...register('remember')}
           />
           <label className="text-sm text-text-dark-muted">Remember me</label>
         </div>

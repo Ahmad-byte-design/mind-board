@@ -4,7 +4,7 @@ import { authApi } from '../../api/auth.api'
 import { useAuthStore } from '../../store/auth.store'
 import { QUERY_KEYS } from '@/constants/query.constants'
 import type { AuthResponse } from '../../types/auth.types'
-import type { RegisterFormData } from '../../schemas/auth.schema'
+import type { RegisterFormData, UpdateProfilePayload } from '../../schemas/auth.schema'
 
 export function useLogin() {
   const { setUser } = useAuthStore()
@@ -55,5 +55,19 @@ export function useCurrentUser() {
       return response.user
     },
     retry: false,
+  })
+}
+
+export function useUpdateProfile() {
+  const { setUser } = useAuthStore()
+
+  return useMutation<AuthResponse, Error, UpdateProfilePayload>({
+    mutationFn: async (data) => {
+      await getCsrf()
+      return authApi.updateProfile(data)
+    },
+    onSuccess: (data) => {
+      setUser(data.user)
+    },
   })
 }

@@ -1,0 +1,45 @@
+{
+  "profile": {
+    "title": "Edit Profile",
+    "name": "Name",
+    "email": "Email",
+    "avatar": "Avatar",
+    "save": "Save changes",
+    "success": "Profile updated successfully",
+    "error": "Failed to update profile"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language"
+  },
+  "userMenu": {
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Log out"
+  },
+  "dialogs": {
+    "createPage": {
+      "title": "New learning page",
+      "placeholder": "e.g. React Mastery",
+      "cancel": "Cancel",
+      "create": "Create page",
+      "creating": "Creating...",
+      "success": "Page created."
+    },
+    "newPaper": {
+      "title": "New paper",
+      "placeholder": "Concept notes...",
+      "create": "Create paper",
+      "creating": "Creating…"
+    },
+    "generateBoard": {
+      "title": "Generate board with AI?",
+      "description": "AI will turn your page topic into a visual knowledge map — papers connected with red strings, laid out and ready to explore.",
+      "warning": "Only works on an empty board. Any existing papers will be rejected by the server.",
+      "cancel": "Cancel",
+      "generate": "Generate with AI",
+      "generating": "Generating...",
+      "success": "Board generated successfully."
+    }
+  }
+}

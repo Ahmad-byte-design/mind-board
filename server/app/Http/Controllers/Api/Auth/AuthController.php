@@ -91,7 +91,6 @@ class AuthController extends Controller
             new OA\Response(response: 422, description: 'Validation error'),
         ],
     )]
-    
     public function login(LoginRequest $request): JsonResponse
     {
         if (! $this->authService->login($request->validated())) {

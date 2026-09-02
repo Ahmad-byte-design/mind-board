@@ -19,3 +19,12 @@ export const registerSchema = z.object({
 
 export type LoginFormData = z.infer<typeof loginSchema>
 export type RegisterFormData = z.infer<typeof registerSchema>
+
+export const updateProfileSchema = z.object({
+  name: z.string().min(2, 'Name must be at least 2 characters'),
+  email: z.string().email('Please enter a valid email address'),
+  avatar: z.instanceof(File).optional(),
+})
+
+export type UpdateProfileFormData = z.infer<typeof updateProfileSchema>
+export type UpdateProfilePayload = UpdateProfileFormData

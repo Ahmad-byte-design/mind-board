@@ -1,49 +1,53 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { ArrowRight } from 'lucide-react'
 import { useRegister } from '../hooks'
 import { toast } from 'sonner'
 import { PrimaryBtn, Input, Form, Avatar } from '@/components/ui'
 import { getApiError, getApiFieldErrors } from '@/lib/api-errors'
 import { ROUTES } from '@/constants/routes.constants'
+import { registerSchema, type RegisterFormData } from '../schemas/auth.schema'
 
 export default function RegisterForm() {
   const navigate = useNavigate()
   const registerMutation = useRegister()
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [passwordConfirmation, setPasswordConfirmation] = useState('')
-  const [avatar, setAvatar] = useState<File | null>(null)
-  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setFieldErrors({})
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    setError,
+    formState: { errors },
+  } = useForm<RegisterFormData>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      password: '',
+      password_confirmation: '',
+      avatar: undefined,
+    },
+  })
 
-    if (password !== passwordConfirmation) {
-      setFieldErrors({ password_confirmation: 'Passwords do not match' })
-      return
-    }
-
-    registerMutation.mutate(
-      { name, email, password, password_confirmation: passwordConfirmation, avatar: avatar ?? undefined },
-      {
-        onSuccess: () => {
-          toast.success('Welcome to Loom!')
-          navigate(ROUTES.LEARNING)
-        },
-        onError: (error) => {
-          const fields = getApiFieldErrors(error)
-          if (Object.keys(fields).length > 0) {
-            setFieldErrors(fields)
-          } else {
-            toast.error(getApiError(error))
+  const onSubmit = handleSubmit((values) => {
+    registerMutation.mutate(values, {
+      onSuccess: () => {
+        toast.success('Welcome to Loom!')
+        navigate(ROUTES.LEARNING)
+      },
+      onError: (error) => {
+        const fields = getApiFieldErrors(error)
+        if (Object.keys(fields).length > 0) {
+          for (const [field, message] of Object.entries(fields)) {
+            setError(field as keyof RegisterFormData, { type: 'server', message })
           }
-        },
-      }
-    )
-  }
+        } else {
+          toast.error(getApiError(error))
+        }
+      },
+    })
+  })
 
   return (
     <div>
@@ -70,44 +74,40 @@ export default function RegisterForm() {
         </button>
       </div>
 
-      <Form onSubmit={handleSubmit}>
-        <Avatar onChange={setAvatar} />
+      <Form onSubmit={onSubmit}>
+        <Avatar onChange={(file) => setValue('avatar', file ?? undefined)} />
 
         <Input
           label="Name"
           type="text"
           required
           placeholder="Your name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          error={fieldErrors.name}
+          error={errors.name?.message}
+          {...register('name')}
         />
         <Input
           label="Email"
           type="email"
           required
           placeholder="you@example.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          error={fieldErrors.email}
+          error={errors.email?.message}
+          {...register('email')}
         />
         <Input
           label="Password"
           type="password"
           required
           placeholder="••••••••"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          error={fieldErrors.password}
+          error={errors.password?.message}
+          {...register('password')}
         />
         <Input
           label="Confirm Password"
           type="password"
           required
           placeholder="••••••••"
-          value={passwordConfirmation}
-          onChange={(e) => setPasswordConfirmation(e.target.value)}
-          error={fieldErrors.password_confirmation}
+          error={errors.password_confirmation?.message}
+          {...register('password_confirmation')}
         />
 
         <PrimaryBtn
