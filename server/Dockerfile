@@ -16,6 +16,7 @@ RUN apk add --no-cache \
         pdo_pgsql \
         bcmath \
         zip \
+        mbstring \
     && docker-php-ext-configure gd \
         --with-freetype \
         --with-jpeg \
