@@ -1,0 +1,26 @@
+services:
+  app:
+    build:
+      context: ./server
+    container_name: 20h-app
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    environment:
+      - APP_ENV=production
+      - APP_DEBUG=false
+      - DB_CONNECTION=sqlite
+      - DB_DATABASE=/var/www/html/database/database.sqlite
+    volumes:
+      - server_storage:/var/www/html/storage
+      - server_database:/var/www/html/database
+    networks:
+      - 20h-network
+
+networks:
+  20h-network:
+    driver: bridge
+
+volumes:
+  server_storage:
+  server_database:
