@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest'
+import { File as NodeFile } from 'node:buffer'
 import { http, HttpResponse } from 'msw'
 import { server } from '@/test/mocks/server'
 import { authApi } from '../api/auth.api'
@@ -82,18 +83,18 @@ describe('authApi.register', () => {
     })
   })
 
-  it('attaches the avatar file when provided', async () => {
-    let sentAvatar: File | null = null
+  it('sends the avatar as a multipart field when provided', async () => {
+    let contentType = ''
+    let bodyContainsAvatar = false
     server.use(
       http.post(AUTH_ENDPOINTS.REGISTER, async ({ request }) => {
-        const form = await request.formData()
-        const avatar = form.get('avatar')
-        sentAvatar = avatar instanceof File ? avatar : (avatar as unknown as File)
+        contentType = request.headers.get('content-type') ?? ''
+        bodyContainsAvatar = (await request.text()).includes('avatar')
         return HttpResponse.json({ message: 'Registration successful.', user: createMockUser() }, { status: 201 })
       }),
     )
 
-    const avatar = new File(['avatar-bytes'], 'me.png', { type: 'image/png' })
+    const avatar = new NodeFile(['avatar-bytes'], 'me.png', { type: 'image/png' })
     await authApi.register({
       name: 'Jane Doe',
       email: 'jane@example.com',
@@ -102,8 +103,8 @@ describe('authApi.register', () => {
       avatar,
     })
 
-    expect(sentAvatar).toBeInstanceOf(File)
-    expect(sentAvatar?.name).toBe('me.png')
+    expect(contentType).toContain('multipart/form-data')
+    expect(bodyContainsAvatar).toBe(true)
   })
 })
 

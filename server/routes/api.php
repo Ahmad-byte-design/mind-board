@@ -7,4 +7,5 @@ Route::prefix('v1')->group(function () {
     require __DIR__.'/api/v1/pages.php';
     require __DIR__.'/api/v1/papers.php';
     require __DIR__.'/api/v1/strings.php';
+    require __DIR__.'/api/v1/board.php';
 });
