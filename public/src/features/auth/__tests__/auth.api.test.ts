@@ -1,5 +1,4 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { File as NodeFile } from 'node:buffer'
 import { http, HttpResponse } from 'msw'
 import { server } from '@/test/mocks/server'
 import { authApi } from '../api/auth.api'
@@ -94,7 +93,7 @@ describe('authApi.register', () => {
       }),
     )
 
-    const avatar = new NodeFile(['avatar-bytes'], 'me.png', { type: 'image/png' })
+    const avatar = new File(['avatar-bytes'], 'me.png', { type: 'image/png' })
     await authApi.register({
       name: 'Jane Doe',
       email: 'jane@example.com',

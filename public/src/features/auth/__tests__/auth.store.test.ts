@@ -90,6 +90,6 @@ describe('useAuthStore', () => {
     const store = await loadFreshStore()
     const user = await store.getState().initializeAuth()
 
-    expect(createMockAuthResponse({ user }).user).toEqual(createMockUser())
+    expect(createMockAuthResponse({ user: user! }).user).toEqual(createMockUser())
   })
 })

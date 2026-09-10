@@ -14,7 +14,7 @@ function PaperNodeInner({ data, selected, dragging }: NodeProps<PaperFlowNode>) 
 
   return (
     <motion.div
-      className="relative select-none"
+      className="relative select-none overflow-hidden"
       style={{
         width: PAPER_NOTE_WIDTH,
         cursor: dragging ? 'grabbing' : movable ? 'grab' : 'pointer',

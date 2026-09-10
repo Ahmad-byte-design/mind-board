@@ -1,9 +1,9 @@
 export const PAGE_ENDPOINTS = {
   LIST: '/api/v1/pages',
   CREATE: '/api/v1/pages',
-  SHOW: (id: number) => `/api/v1/pages/${id}`,
-  UPDATE: (id: number) => `/api/v1/pages/${id}`,
-  DELETE: (id: number) => `/api/v1/pages/${id}`,
+  SHOW: (id: string | number) => `/api/v1/pages/${id}`,
+  UPDATE: (id: string | number) => `/api/v1/pages/${id}`,
+  DELETE: (id: string | number) => `/api/v1/pages/${id}`,
 } as const
 
 export const PAGE_QUERY_LIMIT = 15
